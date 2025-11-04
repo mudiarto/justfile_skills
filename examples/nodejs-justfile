@@ -1,0 +1,49 @@
+# justfile for Node.js/JavaScript projects
+
+default:
+    @just --list
+
+help:
+    @echo "Available commands:"
+    @just --list
+
+install:
+    npm install
+
+build:
+    npm run build
+
+test:
+    npm test
+
+lint:
+    npm run lint
+
+format:
+    npm run format
+
+clean:
+    rm -rf dist/ node_modules/.cache
+
+dev:
+    npm run dev
+
+run:
+    npm start
+
+watch:
+    npm run watch
+
+check: lint test build
+    @echo "All checks passed!"
+
+setup: install build
+    @echo "Project setup complete!"
+
+deploy:
+    npm run deploy
+
+info:
+    @echo "Node version: $(node --version)"
+    @echo "npm version: $(npm --version)"
+    @echo "Working directory: $(pwd)"

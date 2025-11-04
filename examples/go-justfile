@@ -1,0 +1,70 @@
+# justfile for Go projects
+
+default:
+    @just --list
+
+help:
+    @echo "Available commands:"
+    @just --list
+
+install:
+    go mod download
+    go mod tidy
+
+build:
+    # Customize the path ./cmd/app to match your project structure
+    go build -o bin/app ./cmd/app
+
+build-all:
+    # Customize the path ./cmd/app to match your project structure
+    GOOS=linux GOARCH=amd64 go build -o bin/app-linux-amd64 ./cmd/app
+    GOOS=darwin GOARCH=amd64 go build -o bin/app-darwin-amd64 ./cmd/app
+    GOOS=windows GOARCH=amd64 go build -o bin/app-windows-amd64.exe ./cmd/app
+
+test:
+    go test ./...
+
+test-verbose:
+    go test -v ./...
+
+test-coverage:
+    go test -coverprofile=coverage.out ./...
+    go tool cover -html=coverage.out
+
+lint:
+    golangci-lint run
+
+format:
+    gofmt -w .
+
+clean:
+    rm -rf bin/
+    go clean
+
+dev:
+    go run ./cmd/app
+
+run:
+    ./bin/app
+
+check: lint test build
+    @echo "All checks passed!"
+
+setup: install build
+    @echo "Project setup complete!"
+
+deploy:
+    ./deploy.sh
+
+info:
+    @echo "Go version: $(go version)"
+    @echo "Working directory: $(pwd)"
+
+# Run with race detector
+test-race:
+    go test -race ./...
+
+# Update dependencies
+update:
+    go get -u ./...
+    go mod tidy
