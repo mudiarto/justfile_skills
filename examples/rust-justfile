@@ -1,0 +1,70 @@
+# justfile for Rust projects
+
+default:
+    @just --list
+
+help:
+    @echo "Available commands:"
+    @just --list
+
+install:
+    cargo fetch
+
+build:
+    cargo build --release
+
+build-debug:
+    cargo build
+
+test:
+    cargo test
+
+test-verbose:
+    cargo test -- --nocapture
+
+lint:
+    cargo clippy -- -D warnings
+
+format:
+    cargo fmt
+
+format-check:
+    cargo fmt -- --check
+
+clean:
+    cargo clean
+
+dev:
+    cargo watch -x run
+
+run:
+    cargo run --release
+
+run-debug:
+    cargo run
+
+check: format-check lint test build
+    @echo "All checks passed!"
+
+setup: install build
+    @echo "Project setup complete!"
+
+deploy:
+    cargo publish
+
+info:
+    @echo "Rust version: $(rustc --version)"
+    @echo "Cargo version: $(cargo --version)"
+    @echo "Working directory: $(pwd)"
+
+# Run with optimizations for benchmarking
+bench:
+    cargo bench
+
+# Check for security vulnerabilities
+audit:
+    cargo audit
+
+# Update dependencies
+update:
+    cargo update

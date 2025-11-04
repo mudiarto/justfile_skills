@@ -1,0 +1,62 @@
+# justfile for Python projects
+
+default:
+    @just --list
+
+help:
+    @echo "Available commands:"
+    @just --list
+
+install:
+    pip install -r requirements.txt
+
+install-dev:
+    pip install -r requirements-dev.txt
+
+build:
+    python setup.py build
+
+test:
+    pytest
+
+test-verbose:
+    pytest -v
+
+lint:
+    pylint src/
+    flake8 src/
+
+format:
+    black .
+    isort .
+
+clean:
+    rm -rf build/ dist/ *.egg-info
+    find . -type d -name __pycache__ -exec rm -rf {} +
+    find . -type f -name "*.pyc" -delete
+
+dev:
+    python -m src.main
+
+run:
+    python -m src.main
+
+check: lint test
+    @echo "All checks passed!"
+
+setup: install install-dev
+    @echo "Project setup complete!"
+
+deploy:
+    python setup.py sdist bdist_wheel
+    twine upload dist/*
+
+info:
+    @echo "Python version: $(python --version)"
+    @echo "pip version: $(pip --version)"
+    @echo "Working directory: $(pwd)"
+
+# Create virtual environment
+venv:
+    python -m venv venv
+    @echo "Virtual environment created. Activate with: source venv/bin/activate"
