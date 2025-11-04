@@ -12,9 +12,11 @@ install:
     go mod tidy
 
 build:
+    # Customize the path ./cmd/app to match your project structure
     go build -o bin/app ./cmd/app
 
 build-all:
+    # Customize the path ./cmd/app to match your project structure
     GOOS=linux GOARCH=amd64 go build -o bin/app-linux-amd64 ./cmd/app
     GOOS=darwin GOARCH=amd64 go build -o bin/app-darwin-amd64 ./cmd/app
     GOOS=windows GOARCH=amd64 go build -o bin/app-windows-amd64.exe ./cmd/app

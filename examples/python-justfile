@@ -32,8 +32,8 @@ format:
 
 clean:
     rm -rf build/ dist/ *.egg-info
-    find . -type d -name __pycache__ -exec rm -rf {} +
-    find . -type f -name "*.pyc" -delete
+    find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+    find . -type f -name "*.pyc" -delete 2>/dev/null || true
 
 dev:
     python -m src.main

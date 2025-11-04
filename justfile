@@ -80,7 +80,7 @@ deploy:
 
 # Show project information
 info:
-    @echo "Project: justfile_skills"
+    @echo "Project: $(basename $(pwd))"
     @echo "Just version: $(just --version)"
     @echo "Working directory: $(pwd)"
 
